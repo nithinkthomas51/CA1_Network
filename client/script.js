@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     showSection(usersSection);
     userCards.innerHTML = "";
     try {
-      const res = await fetch("http://localhost:3000/users");
+      const res = await fetch("http://3.250.199.103:3000/users");
       const users = await res.json();
       users.forEach((user) => {
         const card = document.createElement("div");
