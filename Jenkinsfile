@@ -18,7 +18,7 @@ pipeline {
   stage('Build_and_Push_Docker_Image') {
       steps {
         script {
-          def imageName = "your-dockerhub-username/your-image-name:latest"  // change this accordingly
+          def imageName = "nith51/node_app:latest"
           sh """
             echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin
             docker build -t $imageName .
