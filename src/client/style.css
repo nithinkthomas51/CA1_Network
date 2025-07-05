@@ -37,7 +37,7 @@ main {
 form {
   display: flex;
   flex-direction: column;
-  max-width: 300px;
+  max-width: 350px;
 }
 
 form label {
