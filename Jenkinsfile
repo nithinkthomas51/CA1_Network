@@ -2,8 +2,7 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_USER = credentials('dockerhub_credentials').username
-    DOCKER_PASS = credentials('dockerhub_credentials').password
+    DOCKER_CRED = credentials('dockerhub_credentials')
     AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     TF_VAR_key_pair_name = 'nith_key'
@@ -13,6 +12,20 @@ pipeline {
     stage('Clone_Repository') {
       steps {
         git url: 'https://github.com/nithinkthomas51/CA1_Network.git', branch: 'main'
+      }
+    }
+
+  stage('Build_and_Push_Docker_Image') {
+      steps {
+        script {
+          def imageName = "your-dockerhub-username/your-image-name:latest"  // change this accordingly
+          sh """
+            echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin
+            docker build -t $imageName .
+            docker push $imageName
+            docker logout
+          """
+        }
       }
     }
 
@@ -59,7 +72,7 @@ pipeline {
           sh '''
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i ansible/hosts.ini ansible/deploy_app.yml \
-              --extra-vars "dockerhub_username=$DOCKER_USER dockerhub_password=$DOCKER_PASS" \
+              --extra-vars "dockerhub_username=$DOCKER_CRED_USR dockerhub_password=$DOCKER_CRED_PSW" \
           '''
         }
       }
