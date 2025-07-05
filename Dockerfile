@@ -5,8 +5,8 @@ FROM node:18
 WORKDIR /app
 
 # Copy server package files and install dependencies
-COPY server/package*.json ./server/
-RUN cd server && npm install
+COPY src/server/package*.json ./src/server/
+RUN cd src/server && npm install
 
 # Copy entire project (client and server)
 COPY . .
@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the backend
-CMD ["node", "server/index.js"]
+CMD ["node", "src/server/index.js"]
