@@ -33,7 +33,7 @@ pipeline {
       steps {
         dir('terraform') {
           sh 'terraform init'
-          sh 'terraform apply -auto-approve -var="key_pair_name=${TF_VAR_key_pair_name}"'
+          sh 'terraform apply -auto-approve -var="key_pair_name=${TF_VAR_key_pair_name}" -var="ssh_cidr=0.0.0.0/0"'
         }
       }
     }
