@@ -71,8 +71,12 @@ pipeline {
         withCredentials([sshUserPrivateKey(credentialsId: 'ec2_private_key', keyFileVariable: 'EC2_KEY')]) {
           sh '''
             export ANSIBLE_HOST_KEY_CHECKING=False
+	    echo "Using key: $EC2_KEY"
+	    chmod 600 $EC2_KEY
+	    ls -l $EC2_KEY
             ansible-playbook -i ansible/hosts.ini ansible/deploy_app.yml \
               --extra-vars "dockerhub_username=$DOCKER_CRED_USR dockerhub_password=$DOCKER_CRED_PSW" \
+	      --private-key $EC2_KEY
           '''
         }
       }
