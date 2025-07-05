@@ -2,12 +2,8 @@ import express from "express";
 import path from "path";
 import sqlite3 from "sqlite3";
 import { fileURLToPath } from "url";
-import cors from "cors";
 
 const app = express();
-app.use(cors({
-	origin: 'http://3.250.199.103:3000',
-}));
 const sql3 = sqlite3.verbose();
 app.use(express.json());
 const __filename = fileURLToPath(import.meta.url);
