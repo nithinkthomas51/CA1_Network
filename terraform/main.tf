@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "app_sg" {
-  name        = "app_sec_group"
+  name        = "app_security_group"
   description = "Allow SSH and app port 3000"
 
   ingress {
@@ -38,6 +38,6 @@ resource "aws_instance" "app_instance" {
   security_groups = [aws_security_group.app_sg.name]
 
   tags = {
-    Name = "node_app"
+    Name = "node_express_sqlite_app"
   }
 }
