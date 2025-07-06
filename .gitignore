@@ -2,3 +2,5 @@ node_modules
 userDB.db
 .env
 .DS_Store
+.terraform*
+tfplan.out

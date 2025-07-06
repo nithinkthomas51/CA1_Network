@@ -6,6 +6,7 @@ pipeline {
     AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
     AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     TF_VAR_key_pair_name = 'nith_key'
+    TF_VAR_ssh_cidr = '0.0.0.0/0'
   }
 
   stages {
