@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "app_sg" {
-  name        = "app_security_group"
+  name        = "app_sec_grp"
   description = "Allow SSH and app port 3000"
 
   ingress {

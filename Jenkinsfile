@@ -59,7 +59,6 @@ pipeline {
 
             [app:vars]
             ansible_user=ubuntu
-            ansible_ssh_private_key_file=${KEY_FILE}
             " > ansible/hosts.ini
           """
         }
