@@ -7,9 +7,8 @@ pipeline {
     AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     TF_VAR_key_pair_name = 'nith_key'
     TF_VAR_ssh_cidr = '0.0.0.0/0'
+    TERRAFORM_CHANGES = 'false'
   }
-
-  def terraformChanges = false
 
   stages {
     stage('Clone_Repository') {
@@ -47,7 +46,7 @@ pipeline {
 	    def planOutput = sh(script: 'terraform plan -detailed-exitcode -var="key_pair_name=${TF_VAR_key_pair_name}" -var="ssh_cidr=${TF_VAR_ssh_cidr}" > tfplan.out || true', returnStatus: true)
 	    if (planOutput == 2) {
 	      echo 'Terraform changes detected. Running apply...'
-	      terraformChanges = true
+	      env.TERRAFORM_CHANGES = 'true'
 	      sh 'terraform apply -auto-approve -var="key_pair_name=${TF_VAR_key_pair_name}" -var="ssh_cidr=0.0.0.0/0"'
 	    } else if (planOutput == 0) {
 	        echo 'No terraform changes detected. Skipping apply...'
@@ -88,7 +87,7 @@ pipeline {
 
     stage('Wait for EC2') {
      when {
-      expression { terraformChanges }
+      expression { env.TERRAFORM_CHANGES == 'true' }
      }
      steps {
        script {
