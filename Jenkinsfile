@@ -40,14 +40,16 @@ pipeline {
     stage('Terraform_Apply') {
       steps {
         dir('terraform') {
-	  def planOutput = sh(script: 'terraform plan -detailed-exitcode -var="key_pair_name=${TF_VAR_key_pair_name}" -var="ssh_cidr=${TF_VAR_ssh_cidr}" > tfplan.out || true', returnStatus: true)
-	  if (planOutput == 2) {
-	    echo 'Terraform changes detected. Running apply...'
-	    sh 'terraform apply -auto-approve -var="key_pair_name=${TF_VAR_key_pair_name}" -var="ssh_cidr=0.0.0.0/0"'
-	  } else if (planOutput == 0) {
-	      echo 'No terraform changes detected. Skipping apply...'
-	  } else {
-	      error 'Terraform plan failed'
+	  script {
+	    def planOutput = sh(script: 'terraform plan -detailed-exitcode -var="key_pair_name=${TF_VAR_key_pair_name}" -var="ssh_cidr=${TF_VAR_ssh_cidr}" > tfplan.out || true', returnStatus: true)
+	    if (planOutput == 2) {
+	      echo 'Terraform changes detected. Running apply...'
+	      sh 'terraform apply -auto-approve -var="key_pair_name=${TF_VAR_key_pair_name}" -var="ssh_cidr=0.0.0.0/0"'
+	    } else if (planOutput == 0) {
+	        echo 'No terraform changes detected. Skipping apply...'
+	    } else {
+	        error 'Terraform plan failed'
+	    }
 	  }
         }
       }
