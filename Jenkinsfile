@@ -66,6 +66,15 @@ pipeline {
       }
     }
 
+    stage('Wait for EC2') {
+     steps {
+       script {
+         echo "Waiting 60 seconds for EC2 to be ready"
+         sleep(time: 60, unit: 'SECONDS')
+       }
+     }
+   } 
+
     stage('Run_Ansible_Playbook') {
       steps {
         withCredentials([sshUserPrivateKey(credentialsId: 'ec2_private_key', keyFileVariable: 'EC2_KEY')]) {
