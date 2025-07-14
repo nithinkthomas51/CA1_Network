@@ -51,6 +51,18 @@
         name: "{{ docker_image }}"
         source: pull
 
+    - name: Ensure container is present before stopping
+      community.docker.docker_container_info:
+        name: node_app
+      register: container_info
+      failed_when: false
+
+    - name: Stop the container if it exists and is running
+      community.docker.docker_container:
+        name: node_app
+        state: stopped
+      when: container_info.container is defined and container_info.container.State.Running
+
     - name: Run container
       community.docker.docker_container:
         name: node_app

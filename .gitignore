@@ -4,3 +4,4 @@ userDB.db
 .DS_Store
 .terraform*
 tfplan.out
+*.tfstate
